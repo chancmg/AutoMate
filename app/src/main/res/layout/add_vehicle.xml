@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.madroft.csb.automate.VehicleActivity"
+    >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/white"
+
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/vehicleModel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Make and model"
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                 />
+
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/vehiclemilage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter Milage in Kmpl"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"
+                 />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/vehicleyear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Year"
+                android:inputType="number"
+                android:maxLines="1"
+                android:singleLine="true"
+                 />
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/vehiclelicense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="License No."
+                android:inputType="text"
+                android:maxLines="1"
+                android:singleLine="true"
+                 />
+        </android.support.design.widget.TextInputLayout>
+        <!-- Link to Login Screen -->
+        <Button
+            android:id="@+id/addvehicle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:background="@color/colorAccent"
+            android:padding="10dp"
+            android:text="add vehicle"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
+</android.support.design.widget.CoordinatorLayout>

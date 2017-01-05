@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/vehicle"
+        android:title="Vehicle list"
+        android:orderInCategory="1"
+        />
+<item android:id="@+id/signout"
+    android:title="@string/menu_signout"
+    android:orderInCategory="2"
+    />
+</menu>

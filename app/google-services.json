@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "38072901854",
+    "firebase_url": "https://automate-b3346.firebaseio.com",
+    "project_id": "automate-b3346",
+    "storage_bucket": "automate-b3346.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38072901854:android:ced2960158007ab1",
+        "android_client_info": {
+          "package_name": "com.madroft.csb.automate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38072901854-bsfpri0ubg66lbvgkbgq228lv8ultkbn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.madroft.csb.automate",
+            "certificate_hash": "91C901CC34254D7B4D4D1F6C842EEB52FB9141FE"
+          }
+        },
+        {
+          "client_id": "38072901854-8jjogpab6j5clapfl2n0vkrkfbq0qlkb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdSiHnFlTAYhBUzK4fD3Kkkej1EaXh64M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38072901854-8jjogpab6j5clapfl2n0vkrkfbq0qlkb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
