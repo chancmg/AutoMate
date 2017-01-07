@@ -40,8 +40,12 @@ public class VehicleActivity extends AppCompatActivity {
     private List<Vehicle> albumList;
     private FloatingActionButton fab;
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    private ValueEventListener vehiclelistener;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +56,7 @@ public class VehicleActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
-        FirebaseUser user=mAuth.getCurrentUser();
+        user=mAuth.getCurrentUser();
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,9 +112,8 @@ public class VehicleActivity extends AppCompatActivity {
     }
 
     private class loadvehicles extends AsyncTask<String, Void, String> {
+
         ProgressDialog loading;
-
-
 
         @Override
         protected void onPreExecute() {
@@ -129,9 +132,11 @@ public class VehicleActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
 
-            mFirebaseDatabase.child(params[0]).child("Vehicle").addValueEventListener(new ValueEventListener() {
+           vehiclelistener= mFirebaseDatabase.child(params[0]).child("Vehicle").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.e("Error Check","Vehicle activity data listener called");
+                    albumList.clear();
 
                     for(DataSnapshot m:dataSnapshot.getChildren())
                     {
@@ -153,5 +158,23 @@ public class VehicleActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("Error Check","From vehicle resume");
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("Error Check","From vehicle pause");
+        mFirebaseDatabase.removeEventListener(vehiclelistener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("Error Check","From vehicle stop");
+        mFirebaseDatabase.removeEventListener(vehiclelistener);
+    }
 }

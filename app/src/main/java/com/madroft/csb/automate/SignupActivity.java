@@ -1,6 +1,7 @@
 package com.madroft.csb.automate;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,7 +35,10 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
+    SharedPreferences pref;
+    SharedPreferences.Editor editpref;
     private User data;
+    int count=0;
     //private String userId;
 
     @Override
@@ -93,7 +97,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                int count=0;
+
                 data= new User(name, email,count);
 
                 //create user
@@ -126,6 +130,11 @@ public class SignupActivity extends AppCompatActivity {
                 if (user != null) {
 
                     mFirebaseDatabase.child(user.getUid()).setValue(data);
+                    pref = getApplicationContext().getSharedPreferences(user.getUid(), MODE_PRIVATE);
+                    editpref = pref.edit();
+                    editpref.putInt("Vehiclecount",count);
+                    editpref.commit();
+
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                 } else {

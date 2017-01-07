@@ -42,6 +42,7 @@ public class EditVehicle extends AppCompatActivity {
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
         btnaddvehicle = (Button) findViewById(R.id.addvehicle);
 
+        Log.e("Error Check","From Create");
         inputmodel = (EditText) findViewById(R.id.vehicleModel);
         inputyear = (EditText) findViewById(R.id.vehicleyear);
         inputmilage = (EditText) findViewById(R.id.vehiclemilage);
@@ -82,49 +83,29 @@ public class EditVehicle extends AppCompatActivity {
 
 
 
-//getting current user
+                //getting current user
                 FirebaseUser user=mAuth.getCurrentUser();
-
-//                mFirebaseDatabase.child(user.getUid()).addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                        User user=dataSnapshot.getValue(User.class);
-//                        if (user == null) {
-//                            Log.e("TEst", "User data is null!");
-//                            return;
-//                        }
-//
-//                        Count=user.Vehiclecount;
-//
-//
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(DatabaseError databaseError) {
-//                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-
 
                 mFirebaseDatabase.child(user.getUid()).child("Vehicle").child(String.valueOf(Count)).child("model").setValue(model);
                 mFirebaseDatabase.child(user.getUid()).child("Vehicle").child(String.valueOf(Count)).child("milage").setValue(milage);
                 mFirebaseDatabase.child(user.getUid()).child("Vehicle").child(String.valueOf(Count)).child("year").setValue(year);
                 mFirebaseDatabase.child(user.getUid()).child("Vehicle").child(String.valueOf(Count)).child("licenseno").setValue(license);
-
-                mFirebaseDatabase.child(user.getUid()).child("Vehicle").addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
+                progressBar.setVisibility(View.GONE);
+                Log.e("Error Check","From editclick");
             }
 
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("Error Check","From Resume");
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

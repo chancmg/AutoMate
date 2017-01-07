@@ -1,7 +1,10 @@
 package com.madroft.csb.automate;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -27,6 +30,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by chan on 02-01-2017.
  */
@@ -35,7 +40,14 @@ public class Vehicleadapter extends RecyclerView.Adapter<Vehicleadapter.MyViewHo
 
     private Context mContext;
     private List<Vehicle> albumList;
-private RadioButton lastchecked=null;
+    ValueEventListener refremove;
+    private RadioButton lastchecked=null;
+    DatabaseReference ref;
+    FirebaseUser user;
+    SharedPreferences pref;
+    SharedPreferences.Editor editpref;
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title;
         public ImageView overflow;
@@ -65,9 +77,16 @@ private RadioButton lastchecked=null;
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+         pref= mContext.getSharedPreferences(MainActivity.username, MODE_PRIVATE);
+         editpref=pref.edit();
         Vehicle album = albumList.get(position);
         holder.title.setText(album.getName());
-
+        if(position==pref.getInt("currentrb",-1))
+        {
+            holder.radio.setChecked(true);
+            lastchecked=holder.radio;
+        }
         holder.overflow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,15 +94,20 @@ private RadioButton lastchecked=null;
             }
         });
 
-        holder.radio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        holder.radio.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                RadioButton checkedrb=holder.radio;
+            public void onClick(View v) {
 
-                if(lastchecked!=null)
+                RadioButton checkedrb=holder.radio;
+                editpref.putInt("currentrb",position);
+                editpref.commit();
+
+
+                if(lastchecked!=null && lastchecked!=checkedrb)
                 {
                     lastchecked.setChecked(false);
                 }
+
                 lastchecked=checkedrb;
             }
         });
@@ -117,9 +141,11 @@ int pos;
             switch (menuItem.getItemId()) {
                 case R.id.action_edit:
                     startseditactiviy(pos);
+                  //  ref.child(user.getUid()).child("Vehicle").child(String.valueOf(pos+1)).removeEventListener(refremove);
                     Toast.makeText(mContext, "Edit", Toast.LENGTH_SHORT).show();
                     return true;
                 case R.id.action_delete:
+                   // deletevehicle(pos);
                     Toast.makeText(mContext, "delete", Toast.LENGTH_SHORT).show();
                     return true;
                 default:
@@ -135,18 +161,20 @@ int pos;
 
     private void startseditactiviy(int pos)
     {
+        Log.e("Error Check","From starteditactivity funtion");
 
         String key;
-        DatabaseReference ref;
+
+
         key=String.valueOf(pos+1);
         ref= FirebaseDatabase.getInstance().getReference("users");
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        Log.e("TEst",key);
+        user= FirebaseAuth.getInstance().getCurrentUser();
+        Log.e("why this?",key);
         ref.child(user.getUid()).child("Vehicle").child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Vehicledetails v=dataSnapshot.getValue(Vehicledetails.class);
-                Log.e("TEst",dataSnapshot.getKey());
+                Log.e("or this?",dataSnapshot.getKey());
                 String mod=v.model;
                 String mil=v.milage;
                 String year=v.year;
@@ -172,8 +200,37 @@ int pos;
         });
 
 
-
-
     }
+
+
+   /* private void deletevehicle(int pos)
+    {
+        AlertDialog.Builder alertDialog;
+        final String key;
+        key=String.valueOf(pos+1);
+        alertDialog=new AlertDialog.Builder(mContext);
+        alertDialog.setCancelable(false);
+        alertDialog.setMessage("Do You want to Delete?");
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+                ref= FirebaseDatabase.getInstance().getReference("users");
+                user= FirebaseAuth.getInstance().getCurrentUser();
+                int count=pref.getInt("Vehiclecount",0);
+                ref.child(user.getUid()).child("Vehiclecount").setValue(count-1);
+                editpref.putInt("Vehiclecount",count-1);
+                ref.child(user.getUid()).child("Vehicle").child(key).removeValue();
+            }
+        });
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alertDialog.show();
+
+
+    }*/
 }
 

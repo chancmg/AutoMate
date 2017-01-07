@@ -1,5 +1,6 @@
 package com.madroft.csb.automate;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.madroft.csb.automate.MainActivity.username;
+
 /**
  * Created by chan on 03-01-2017.
  */
@@ -32,6 +35,8 @@ public class AddVehicle extends AppCompatActivity {
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
     private Vehicledetails vdetails;
+    SharedPreferences pref;
+    SharedPreferences.Editor editpref;
     int Count;
 
     @Override
@@ -41,6 +46,8 @@ public class AddVehicle extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mFirebaseInstance = FirebaseDatabase.getInstance();
         mFirebaseDatabase = mFirebaseInstance.getReference("users");
+        pref = getApplicationContext().getSharedPreferences(username, MODE_PRIVATE);
+        editpref = pref.edit();
 
         btnaddvehicle = (Button) findViewById(R.id.addvehicle);
 
@@ -77,8 +84,8 @@ public class AddVehicle extends AppCompatActivity {
                 vdetails=new Vehicledetails(model,milage,year,license);
                 //getting current user
                 FirebaseUser user=mAuth.getCurrentUser();
-
-                mFirebaseDatabase.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+                Count=pref.getInt("Vehiclecount",0);
+               /* mFirebaseDatabase.child(user.getUid()).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                             User user=dataSnapshot.getValue(User.class);
@@ -88,7 +95,7 @@ public class AddVehicle extends AppCompatActivity {
                         }
 
                        Count=user.Vehiclecount;
-
+                        Log.e("Count", String.valueOf(Count));
 
                     }
 
@@ -96,16 +103,16 @@ public class AddVehicle extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
                         Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
                     }
-                });
-
+                });*/
 
                 mFirebaseDatabase.child(user.getUid()).child("Vehicle").child(String.valueOf(Count+1)).setValue(vdetails);
                 mFirebaseDatabase.child(user.getUid()).child("Vehiclecount").setValue(Count+1);
+                editpref.putInt("Vehiclecount",Count+1);
+                editpref.commit();
                 progressBar.setVisibility(View.GONE);
                 mFirebaseDatabase.child(user.getUid()).child("Vehicle").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-
                         Toast.makeText(getApplicationContext(),"Added-vehicle:"+String.valueOf(Count+1),Toast.LENGTH_SHORT).show();
                         inputmodel.setText("");
                         inputmilage.setText("");
